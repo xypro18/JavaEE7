@@ -8,7 +8,9 @@ package demos.client;
 import com.sun.istack.internal.logging.Logger;
 import demos.db.Product;
 import demos.model.ProductManager;
-import java.util.List;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.Scanner;
 import java.util.logging.Level;
 import javax.validation.ConstraintViolationException;
 import org.eclipse.persistence.exceptions.OptimisticLockException;
@@ -29,10 +31,16 @@ public class ProductClient {
 		try {
 			ProductManager pm = new ProductManager( "ProductClientPU" );
 			Product p = pm.findProduct( 1 );
-			System.out.println( p );
-			List<Product> products = pm.findProductByName( "Co%" );
-			products.stream().forEach( pr -> System.out.println( pr ) );
+			p.setPrice( BigDecimal.valueOf( 5 ) );
+//			p.setName( "x" );
+			Scanner s = new Scanner( System.in );
+			System.out.println( "Enter to continue" );
+			s.nextLine();
+			p.setBestBefore( LocalDate.now().plusDays( 1 ) );
+			pm.update( p );
 
+//			List<Product> products = pm.findProductByName( "Co%" );
+//			products.stream().forEach( pr -> System.out.println( pr ) );
 			pm.closeEntityManager();
 
 		} catch ( Exception ex ) {
